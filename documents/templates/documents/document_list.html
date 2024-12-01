@@ -1,0 +1,36 @@
+{% extends 'documents/base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Documents</h1>
+        <a href="{% url 'documents:document_create' %}" 
+           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Create New Document
+        </a>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg">
+        {% if documents %}
+            <ul class="divide-y divide-gray-200">
+                {% for document in documents %}
+                    <li class="p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-lg font-semibold text-gray-800">{{ document.title }}</h2>
+                                <p class="text-sm text-gray-600">Created: {{ document.created_at|date:"F j, Y" }}</p>
+                            </div>
+                            <a href="{% url 'documents:generate_pdf' document.pk %}" 
+                               class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                Generate PDF
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="p-4 text-gray-600">No documents available.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
