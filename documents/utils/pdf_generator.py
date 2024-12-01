@@ -1,4 +1,4 @@
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
 from reportlab.lib.pagesizes import letter
 from io import BytesIO
 from .pdf_styles import get_title_style, get_content_style
@@ -37,11 +37,14 @@ class PDFGenerator:
         
         # Add content
         prediction = json.loads(self.document.content)
+        data = [["Differential Diagnosis", "Status"]]
         for key in prediction.keys():
             if type(prediction[key]) == type(0.0):
-                
-                print(key, ": ",self._classify(prediction[key]))
-        content = Paragraph(self.document.content, get_content_style())
+                a = [key, self._classify(prediction[key])]
+                data.append(a)
+        
+        content = Table(data)
+        # content = Paragraph(self.document.content, get_content_style())
         story.append(content)
         story.append(Spacer(1, 12))
         
